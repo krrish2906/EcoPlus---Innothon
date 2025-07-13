@@ -34,8 +34,15 @@ Our goal is to create a **digital ecosystem for civic engagement and environment
   - 👥 Users  
   - 🚩 Flagged reports  
   - 🗂️ Content
+- 🎮 **Gamification and Leaderboard**:
+  - Users earn points for reporting, joining events, or engaging with posts.
+  - Top contributors are showcased in a **leaderboard** sorted by impact.
+  - Badge system: “Eco Hero,” “Top Spotter,” “Volunteer Star,” etc.
+- ⚠️ **Auto-Escalation System**:
+  - If a reported issue is **unresolved for a defined time period** (e.g., 7 days),
+  - It is **escalated to higher-level authorities or NGOs** via email or flagged priority view.
+  - Reporter and local users may also get a reminder to check/update the issue status.
 
----
 
 ### ⚙️ 2. Non-Functional Requirements
 
@@ -55,9 +62,9 @@ Our goal is to create a **digital ecosystem for civic engagement and environment
 | **Frontend**      | React + TailwindCSS               |
 | **Backend**       | Node.js + Express.js              |
 | **Database**      | MongoDB                           |
-| **Authentication**| Firebase Auth / JWT               |
+| **Authentication**| Clerk / JWT             |
 | **Maps**          | Leaflet.js + OpenStreetMap        |
-| **Image Uploads** | Cloudinary or Firebase Storage    |
+| **Image Uploads** | Cloudinary  |
 | **Geolocation**   | HTML5 Geolocation + OpenCage/Nominatim (optional) |
 | **Hosting**       | Vercel (frontend) + Render/Fly.io (backend) + MongoDB Atlas |
 
@@ -65,10 +72,8 @@ Our goal is to create a **digital ecosystem for civic engagement and environment
 
 ### 🚀 4. Optional (Stretch Goals)
 
-- 🔔 Email or push notifications for events in user's area  
-- 🏅 Gamification: Badges for top reporters and green volunteers  
-- 📊 Impact Dashboard: Visualize areas cleaned, trees planted, events held  
+- 🔔 Email or push notifications for events in user's area    
 - 📧 Integration with authority/NGO email contacts for alerts  
-- 🧠 AI tag suggestions for auto-classifying issues from images  
+
 
 ---
