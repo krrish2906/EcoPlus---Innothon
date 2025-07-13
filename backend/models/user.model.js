@@ -23,8 +23,30 @@ const userSchema = new mongoose.Schema(
         profilePic : {
             type : String , 
             default :  ""
+        },
+        role :{
+            type : String , 
+            required : true,
+            enum : ["admin" , "user","organisations"],
+            default : "user"
+        },
+        location: {
+            lat: Number,
+            lng: Number,
+            address: String
+          },
+        points : {
+            type : Number , 
+            default : 0
+        },
+       badges : {
+        type : [String] , 
+        default : [],
+        enum : ['Eco Hero', 'Top Reporter']
+       }
+
         }
-    } , {timestamps : true}
+     , {timestamps : true}
 )
 
 const User = mongoose.model('User ' , userSchema) ;
