@@ -3,10 +3,10 @@ import { create, deletePost, getAllPosts, getPostById, updatePost } from "../con
 const router = express.Router();
 import {protectRoute} from '../middlewares/auth.middleware.js';   
 
-router.post("/create", create);
-router.delete("/delete/:id"  , deletePost);
-router.put("/update/:id"  , updatePost);
-router.get("/all" , getAllPosts);
-router.get("/:id" , getPostById);
+router.post("/create", protectRoute , create);
+router.delete("/delete/:id" , protectRoute , deletePost);
+router.put("/update/:id" , protectRoute , updatePost);
+router.get("/all" , protectRoute , getAllPosts);
+router.get("/:id" , protectRoute , getPostById);
 
 export default router
