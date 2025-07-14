@@ -48,4 +48,4 @@ const eventScehema = new mongoose.Schema(
 )
 
 const Event = mongoose.model('Event' , eventScehema);
-module.exports = Event;
+export default Event;
