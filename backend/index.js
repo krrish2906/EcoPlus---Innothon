@@ -2,6 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 
 import authRoutes from './routes/auth.route.js'
+import eventRoutes from './routes/event.route.js'
 import postsRoutes from './routes/posts.route.js'
 dotenv.config();
 import { connectDb } from './config/db.js';
@@ -21,6 +22,7 @@ app.use(cors({
 })
 )
 app.use("/api/auth" , authRoutes);
+app.use("/api/event" , eventRoutes);
 app.use("/api/posts" , postsRoutes);
 
 const setUpAndStartServer = ()=>{
