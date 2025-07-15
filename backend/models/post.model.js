@@ -28,8 +28,9 @@ const postSchema = new mongoose.Schema({
         ref : "User"
     },
     comments:{
-        type : mongoose.Schema.Types.ObjectId,
-        ref : "Comment"
+        type : [mongoose.Schema.Types.ObjectId],
+        ref : "Comment",
+        default: []
     },
     escalatedAt : {
         type : Date,
