@@ -1,7 +1,7 @@
 import express from "express";
 import {signup , login , logout , updateProfile , checkAuth} from '../controllers/auth.controller.js'
-import {createEvent , getAllEvents , getEventById , updateEvent , deleteEvent} from '../controllers/event.controller.js'
 import {protectRoute} from '../middlewares/auth.middleware.js'
+import {uploadProfilePic} from '../middlewares/upload.js'
 const router = express.Router();
 
 
@@ -9,7 +9,7 @@ const router = express.Router();
 router.post('/signup' ,signup );
 router.post('/login' ,login );
 router.post('/logout' ,logout );
-router.put('/update' ,protectRoute ,  updateProfile)
+router.put('/update' ,protectRoute ,uploadProfilePic.single("profilePic") ,  updateProfile)
 router.get('/check' , protectRoute, checkAuth)
 
 
