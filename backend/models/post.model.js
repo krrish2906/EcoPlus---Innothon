@@ -21,7 +21,8 @@ const postSchema = new mongoose.Schema({
     status : {
         type : String,
         required : true,
-        enum : ['Pending', 'Resolved']
+        enum : ['Pending', 'Resolved'],
+        default : 'Pending'
     },
     createdBy : {
         type : mongoose.Schema.Types.ObjectId,
