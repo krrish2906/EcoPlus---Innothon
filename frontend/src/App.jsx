@@ -8,7 +8,7 @@ function App() {
   return (
 <Routes>
     <Route path="/" element={<div>Kaisan BA</div>} />
-    <Route path="/postForm" element={<PostForm />} />
+    <Route path="/postform" element={<PostForm />} />
     <Route path="/signup" element={<SignUpPage />} />
 </Routes>
   )
