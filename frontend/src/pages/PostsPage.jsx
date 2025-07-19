@@ -1,4 +1,5 @@
 import React from "react"
+import { useNavigate } from "react-router-dom"
 
 const organizations = [
   {
@@ -50,6 +51,7 @@ const posts = [
 ]
 
 export default function Home() {
+    const navigate = useNavigate();
   return (
     <div className="flex h-screen overflow-hidden">
       {/* Sidebar */}
@@ -101,7 +103,7 @@ export default function Home() {
       <main className="flex-1 overflow-y-auto p-8">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold">Feed</h1>
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+          <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" onClick={() => navigate('/postform')}>
             Create Post
           </button>
         </div>

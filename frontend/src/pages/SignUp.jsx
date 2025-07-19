@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { FcGoogle } from 'react-icons/fc';
 import { PiEye, PiEyeClosed } from 'react-icons/pi';
-import { NavLink } from 'react-router-dom'
+import { useNavigate,NavLink } from 'react-router-dom'
+import axios from 'axios';
 
 function SignUp() {
+    const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -12,6 +14,24 @@ function SignUp() {
     const [emailAddress, setEmailAddress] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+
+    async function handleSignUp(e) {
+        e.preventDefault();
+        setIsLoading(true);
+
+        const response = await axios.post('http://localhost:3000/api/auth/signup', {
+            fullName: emailAddress,
+            email: emailAddress,
+            password: password,
+            confirmPassword: confirmPassword
+        });
+        
+        setIsLoading(false);
+        if(response.status === 201){
+         navigate('/'); 
+        }
+
+    }
     
     return (
         <div className='h-full min-h-[calc(100vh-4rem)] w-full bg-white text-black flex flex-col items-center pb-1'>
@@ -21,7 +41,7 @@ function SignUp() {
                     <span className='text-[#0D80F2]'>EcoPlus</span>
                 </h1>
             </div>
-                <form
+                <form onSubmit={handleSignUp}
                     className='flex flex-col gap-y-5 mt-8 w-3/4 items-center'
                 >
                     {/* Email */}

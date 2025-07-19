@@ -78,7 +78,7 @@ export default function LogInPage() {
             <div className='mt-5'>
                 <p className='text-sm text-[#4A739C] tracking-wide'>
                     Don’t have an account?{" "}
-                    <NavLink href='/auth/signup' className='hover:underline'>Sign Up</NavLink>
+                    <NavLink to={'/auth/signup'} className='hover:underline'>Sign Up</NavLink>
                 </p>
             </div>
         </div>
