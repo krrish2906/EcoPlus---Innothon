@@ -1,35 +1,32 @@
 import Post from "../models/post.model.js";
 import {cloudinary} from "../config/cloudinary.js";
 
+
 export const create = async (req, res) => {
   try {
-    const { report, category, status, createdBy } = req.body;
+    const { title, description, location, category } = req.body;
 
-    
-    if (!report || !report.image) {
-      return res.status(400).json({ message: 'Image is required to create a post' });
+    if (!req.file) {
+      return res.status(400).json({ message: "Image is required" });
     }
 
-    
-    const uploadResponse = await cloudinary.uploader.upload(report.image);
-    const imageUrl = uploadResponse.secure_url;
+    const imageUrl = req.file.path; // Already hosted on Cloudinary
 
     const post = await Post.create({
       report: {
-        title: report.title,
-        description: report.description,
-        location: report.location,
-        imageUrl: imageUrl, 
+        title,
+        description,
+        location,
+        imageUrl,
       },
       category,
-      status,
-      createdBy,
+      createdBy: req.user?._id || "687665cde422165dc861b011",
     });
 
     return res.status(201).json(post);
   } catch (error) {
-    console.error('Error in the create controller:', error.message);
-    return res.status(500).json({ message: 'Internal Server Error' });
+    console.error("Error in create controller:", error.message);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
  
