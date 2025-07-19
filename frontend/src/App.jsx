@@ -7,6 +7,7 @@ import LogInPage from './pages/Login'
 import PostsPage from './pages/PostsPage'
 import ProfilePage from './pages/ProfilePage'
 import HomePage from './pages/HomePage'
+import CommunityPage from './pages/CommunityPage'
 function App() {
 
   return (

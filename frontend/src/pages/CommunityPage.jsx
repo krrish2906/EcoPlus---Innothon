@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { NavLink } from 'react-router'
 import { reports } from '../lib/data';
 import Report from '../components/Report';
 
 function CommunityPage() {
+    const [activeTab, setActiveTab] = useState('events');
+
     return (
         <div className='w-full flex justify-center'>
             <div className='w-4/5'>
@@ -25,7 +27,43 @@ function CommunityPage() {
 
                 <div className='mt-15'>
                     <div>
-                        {/* todo- sections */}
+                        {/* Tabs */}
+                        <div className='mt-10'>
+                            <div className='flex space-x-6 border-b border-gray-300 text-sm font-medium'>
+                                <button
+                                    className={`pb-2 ${
+                                        activeTab === 'about' ? 'border-b-2 border-black' : 'text-gray-500'
+                                    }`}
+                                    onClick={() => setActiveTab('about')}
+                                >
+                                    About
+                                </button>
+                                <button
+                                    className={`pb-2 ${
+                                        activeTab === 'posts' ? 'border-b-2 border-black' : 'text-gray-500'
+                                    }`}
+                                    onClick={() => setActiveTab('posts')}
+                                >
+                                    Posts
+                                </button>
+                                <button
+                                    className={`pb-2 ${
+                                        activeTab === 'events' ? 'border-b-2 border-black' : 'text-gray-500'
+                                    }`}
+                                    onClick={() => setActiveTab('events')}
+                                >
+                                    Events
+                                </button>
+                                <button
+                                    className={`pb-2 ${
+                                        activeTab === 'impact' ? 'border-b-2 border-black' : 'text-gray-500'
+                                    }`}
+                                    onClick={() => setActiveTab('impact')}
+                                >
+                                    Impact
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <div className='h-[1px] bg-gray-300'></div>
                     <div className='flex flex-col gap-y-12 mt-12'>
@@ -65,17 +103,19 @@ function CommunityPage() {
                         
                         <div>
                             <h1 className='text-xl font-bold'>Impact Reports</h1>
+                            <div className='flex flex-col gap-y-5 my-5'>
                             {
                                 reports.map((report, index) => (
                                     <Report
-                                        key={index}
-                                        report={report.report}
-                                        title={report.title}
-                                        desc={report.desc}
-                                        image={report.image}
+                                    key={index}
+                                    report={report.report}
+                                    title={report.title}
+                                    desc={report.desc}
+                                    image={report.image}
                                     />
                                 ))
                             }
+                            </div>
                         </div>
                     </div>
                 </div>
