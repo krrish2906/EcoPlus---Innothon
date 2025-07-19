@@ -7,6 +7,7 @@ import LogInPage from './pages/Login'
 import PostsPage from './pages/PostsPage'
 import ProfilePage from './pages/ProfilePage'
 import NavBar from './components/NavBar'
+import CommunityPage from './pages/CommunityPage'
 
 function App() {
 
@@ -16,13 +17,13 @@ function App() {
       <Routes>
       <Route index element={<PostsPage />} />
         <Route path="user/profile" element={<ProfilePage />} />
+        <Route path="community" element={<CommunityPage />} />
         <Route path="auth/signup" element={<SignUpPage />} />
         <Route path="auth/login" element={<LogInPage />} />
         <Route path="postform" element={<PostForm />} />
       </Routes>
       </div>
-  
-  )
-} 
+    )
+}
 
 export default App  

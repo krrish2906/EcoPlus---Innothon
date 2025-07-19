@@ -6,11 +6,13 @@ const postSchema = new mongoose.Schema({
         title : String,
         description : String,
         imageUrl : String,
-        location : {
-            lat: Number,
-            lng: Number,
-            address: String
-          },
+        // location : { 
+        //     lat: Number,
+        //     lng: Number,
+        //     address: String
+        //   },
+
+        location : String,
 
     },
     category : {
@@ -24,10 +26,10 @@ const postSchema = new mongoose.Schema({
         enum : ['Pending', 'Resolved'],
         default : 'Pending'
     },
-    createdBy : {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : "User"
-    },
+    // createdBy : {
+    //     type : mongoose.Schema.Types.ObjectId,
+    //     ref : "User"
+    // },
     comments:{
         type : [mongoose.Schema.Types.ObjectId],
         ref : "Comment",
