@@ -7,6 +7,7 @@ import LogInPage from './pages/Login'
 import Home from './pages/Home'
 import ProfilePage from './pages/ProfilePage'
 import HomePage from './pages/HomePage'
+import CommunityPage from './pages/CommunityPage'
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/user/profile" element={<ProfilePage />} />
+      <Route path="/community" element={<CommunityPage />} />
       <Route path="/auth/signup" element={<SignUpPage />} />
       <Route path="/auth/login" element={<LogInPage />} />
       <Route path="/postform" element={<PostForm />} />
