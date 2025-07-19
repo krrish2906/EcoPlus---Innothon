@@ -12,7 +12,7 @@ const postSchema = new mongoose.Schema({
         //     address: String
         //   },
 
-        location : String,
+        location : String
 
     },
     category : {

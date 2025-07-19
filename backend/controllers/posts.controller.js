@@ -63,7 +63,7 @@ export const updatePost = async (req, res) => {
 
 export const getAllPosts = async (req , res) => {
     try {
-        const posts = await Post.find();
+        const posts = await Post.find().sort({createdAt : -1});
         return res.status(200).json(posts);
     } catch (error) {
         console.log("Error in the get all controller" , error.message);
