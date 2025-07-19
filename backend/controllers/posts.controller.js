@@ -71,6 +71,32 @@ export const getAllPosts = async (req , res) => {
     }
 }
 
+export const searchPostFilter = async (req, res) => {
+  try {
+    const { search } = req.query;
+
+    if (!search?.trim()) {
+      return res.status(200).json([]);
+    }
+
+    const posts = await Post.find({
+      $or: [
+        { 'report.category': { $regex: search, $options: 'i' } },
+        { 'report.title': { $regex: search, $options: 'i' } },
+        { 'report.description': { $regex: search, $options: 'i' } },
+        { 'report.location': { $regex: search, $options: 'i' } },
+        { category: { $regex: search, $options: 'i' } },
+      ]
+    });
+
+    return res.status(200).json(posts);
+  } catch (error) {
+    console.log('Error in the search controller', error.message);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+
 export const getPostById = async (req , res) => {
     try {
         const post = await Post.findById(req.params.id);

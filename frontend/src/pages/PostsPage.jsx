@@ -1,23 +1,6 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
-
-const organizations = [
-  {
-    name: "Green Earth Initiative",
-    followers: 120,
-    logo: "/logos/green-earth.png",
-  },
-  {
-    name: "Community Helpers",
-    followers: 85,
-    logo: "/logos/community-helpers.png",
-  },
-  {
-    name: "Animal Rescue League",
-    followers: 60,
-    logo: "/logos/animal-rescue.png",
-  },
-]
+import SideBar from "../components/SideBar"
 
 const posts = [
   {
@@ -54,50 +37,7 @@ export default function Home() {
     const navigate = useNavigate();
   return (
     <div className="flex h-screen overflow-hidden">
-      {/* Sidebar */}
-      <aside className="w-64 bg-gray-50 p-6 border-r">
-        <input
-          type="text"
-          placeholder="Search"
-          className="w-full px-3 py-2 mb-4 rounded-md bg-gray-100"
-        />
-        <div className="mb-6">
-          <h2 className="text-sm font-semibold text-gray-600 mb-2">Filters</h2>
-          <div className="flex flex-wrap gap-2">
-            {["Category", "Organization", "Date", "Location"].map((filter) => (
-              <button
-                key={filter}
-                className="px-3 py-1 bg-gray-200 text-sm rounded-full"
-              >
-                {filter}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <h2 className="text-sm font-semibold text-gray-600 mb-2">
-            Organizations
-          </h2>
-          <div className="space-y-4">
-            {organizations.map((org) => (
-              <div key={org.name} className="flex items-center gap-3">
-                <img
-                  src={org.logo}
-                  alt={org.name}
-                  className="w-10 h-10 rounded-full"
-                />
-                <div>
-                  <p className="text-sm font-medium">{org.name}</p>
-                  <p className="text-xs text-gray-500">
-                    {org.followers} followers
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </aside>
+      <SideBar />
 
       {/* Feed */}
       <main className="flex-1 overflow-y-auto p-8">
