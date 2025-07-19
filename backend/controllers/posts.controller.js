@@ -85,7 +85,6 @@ export const searchPostFilter = async (req, res) => {
         { 'report.title': { $regex: search, $options: 'i' } },
         { 'report.description': { $regex: search, $options: 'i' } },
         { 'report.location': { $regex: search, $options: 'i' } },
-        { category: { $regex: search, $options: 'i' } },
       ]
     });
 
