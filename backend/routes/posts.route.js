@@ -6,7 +6,7 @@ import {uploadPostImage} from '../middlewares/upload.js';
 router.post("/create", uploadPostImage.single("image") , create);
 router.delete("/delete/:id" , protectRoute , deletePost);
 router.put("/update/:id", protectRoute, uploadPostImage.single("image"), updatePost);
-router.get("/all" , protectRoute , getAllPosts);
-router.get("/:id" , protectRoute , getPostById);
+router.get("/all" , getAllPosts);
+router.get("/:id" , getPostById);
 
 export default router

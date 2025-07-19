@@ -1,5 +1,7 @@
-import React from "react"
-import { useNavigate } from "react-router-dom"
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Card from "../components/Card";
+import axios from "axios";
 
 const organizations = [
   {
@@ -17,57 +19,42 @@ const organizations = [
     followers: 60,
     logo: "/logos/animal-rescue.png",
   },
-]
-
-const posts = [
-  {
-    author: "Green Earth Initiative",
-    title: "Community Cleanup Event",
-    description:
-      "Join us for a community cleanup event at Central Park on Saturday, July 20th. We'll be picking up trash, planting trees, and making our park a better place for everyone. All ages welcome!",
-    image: "/images/cleanup.jpg",
-  },
-  {
-    author: "Sarah Miller",
-    title: "Fundraising Bake Sale",
-    description:
-      "I'm organizing a bake sale to raise funds for the local animal shelter. Come by the town square on Sunday, July 21st, and support a great cause with some delicious treats!",
-    image: "/images/bake-sale.jpg",
-  },
-  {
-    author: "Community Helpers",
-    title: "Elderly Assistance Program",
-    description:
-      "We're looking for volunteers to assist elderly residents with errands, companionship, and light household tasks. If you have some free time and a caring heart, please sign up!",
-    image: "/images/elderly-help.jpg",
-  },
-  {
-    author: "Animal Rescue League",
-    title: "Pet Adoption Day",
-    description:
-      "Join us for our pet adoption day at the local pet store on Saturday, July 27th. Find your new furry friend and give a loving home to an animal in need!",
-    image: "/images/pet-adoption.jpg",
-  },
-]
+];
 
 export default function Home() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/posts/all");
+        setPosts(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchPosts();
+  }, []);
+
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-screen overflow-hidden font-sans bg-gray-50">
       {/* Sidebar */}
-      <aside className="w-64 bg-gray-50 p-6 border-r">
+      <aside className="w-64 bg-white p-6 border-r border-gray-200 shadow-sm">
         <input
           type="text"
           placeholder="Search"
-          className="w-full px-3 py-2 mb-4 rounded-md bg-gray-100"
+          className="w-full px-4 py-2 mb-5 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <div className="mb-6">
-          <h2 className="text-sm font-semibold text-gray-600 mb-2">Filters</h2>
+
+        {/* Filters */}
+        <div className="mb-8">
+          <h2 className="text-sm font-semibold text-gray-700 mb-3">Filters</h2>
           <div className="flex flex-wrap gap-2">
             {["Category", "Organization", "Date", "Location"].map((filter) => (
               <button
                 key={filter}
-                className="px-3 py-1 bg-gray-200 text-sm rounded-full"
+                className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full hover:bg-blue-200"
               >
                 {filter}
               </button>
@@ -75,8 +62,9 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Organizations */}
         <div>
-          <h2 className="text-sm font-semibold text-gray-600 mb-2">
+          <h2 className="text-sm font-semibold text-gray-700 mb-3">
             Organizations
           </h2>
           <div className="space-y-4">
@@ -85,10 +73,12 @@ export default function Home() {
                 <img
                   src={org.logo}
                   alt={org.name}
-                  className="w-10 h-10 rounded-full"
+                  className="w-10 h-10 rounded-full border"
                 />
                 <div>
-                  <p className="text-sm font-medium">{org.name}</p>
+                  <p className="text-sm font-medium text-gray-800">
+                    {org.name}
+                  </p>
                   <p className="text-xs text-gray-500">
                     {org.followers} followers
                   </p>
@@ -99,37 +89,26 @@ export default function Home() {
         </div>
       </aside>
 
-      {/* Feed */}
-      <main className="flex-1 overflow-y-auto p-8">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold">Feed</h1>
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" onClick={() => navigate('/postform')}>
-            Create Post
+      {/* Main Feed */}
+      <main className="flex-1 overflow-y-auto p-8 bg-gray-50">
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-3xl font-bold text-gray-800">Feed</h1>
+          <button
+            className="px-5 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition"
+            onClick={() => navigate("/postform")}
+          >
+            + Create Post
           </button>
         </div>
 
-        <div className="space-y-8">
-          {posts.map((post, index) => (
-            <div
-              key={index}
-              className="flex items-start justify-between border-b pb-6"
-            >
-              <div className="w-2/3 pr-4">
-                <p className="text-sm text-gray-500 mb-1">
-                  Posted by {post.author}
-                </p>
-                <h2 className="font-semibold text-lg">{post.title}</h2>
-                <p className="text-sm text-gray-700">{post.description}</p>
-              </div>
-              <img
-                src={post.image}
-                alt={post.title}
-                className="w-32 h-20 object-cover rounded-md"
-              />
-            </div>
-          ))}
+        <div className="space-y-10">
+          {posts.length === 0 ? (
+            <p className="text-gray-500 text-center">No posts found.</p>
+          ) : (
+            posts.map((post, index) => <Card key={index} post={post} />)
+          )}
         </div>
       </main>
     </div>
-  )
+  );
 }
