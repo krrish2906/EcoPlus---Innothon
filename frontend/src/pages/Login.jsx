@@ -1,14 +1,35 @@
+import axios from 'axios';
 import React, { useState } from 'react'
 import { FcGoogle } from 'react-icons/fc';
 import { PiEye, PiEyeClosed } from 'react-icons/pi';
-import { NavLink } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
 
 export default function LogInPage() {
+    const navigate = useNavigate();
     const [emailAddress, setEmailAddress] = useState('');
     const [password, setPassword] = useState('');
     
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+
+    const login = async (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+        try {
+            const response = await axios.post('http://localhost:3000/api/auth/login', {
+                email: emailAddress,
+                password: password,
+            });
+            if(response.statusText == "OK") {
+                navigate('/');
+            }
+        } catch (error) {
+            toast.error(error.message)
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
         <div className='h-[calc(100vh-4rem)] w-full bg-white text-black flex flex-col items-center'>
@@ -17,7 +38,7 @@ export default function LogInPage() {
                     <span className='text-[#0D80F2]'>Welcome</span> Back!
                 </h1>
             </div>
-            <form className='flex flex-col gap-y-5 mt-8 w-3/4 items-center'>
+            <form className='flex flex-col gap-y-5 mt-8 w-3/4 items-center' onSubmit={login}>
                 <label className='flex flex-col gap-y-2 w-1/2'>
                     <span className='font-medium text-base'>Email</span>
                     <input
@@ -78,7 +99,7 @@ export default function LogInPage() {
             <div className='mt-5'>
                 <p className='text-sm text-[#4A739C] tracking-wide'>
                     Don’t have an account?{" "}
-                    <NavLink href='/auth/signup' className='hover:underline'>Sign Up</NavLink>
+                    <NavLink to={'/auth/signup'} className='hover:underline'>Sign Up</NavLink>
                 </p>
             </div>
         </div>

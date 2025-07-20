@@ -28,7 +28,7 @@ export const signup = async (req, res) => {
         if (newUser) {
             generateToken(newUser._id, res);
             await newUser.save();
-            res.status(201).json({ _id: newUser._id, fullName: newUser.fullName, email: newUser.email, profilePic: newUser.profilePic })
+            return res.status(201).json({ _id: newUser._id, fullName: newUser.fullName, email: newUser.email, profilePic: newUser.profilePic })
         }
         else {
             return res.status(400).json({ message: "invalid user data" })
@@ -82,19 +82,17 @@ export const logout = (req, res) => {
 
 export const updateProfile = async (req, res) => {
     try {
-      const { profilePic } = req.body;
       const userId = req.user._id;
   
-      if (!profilePic) {
+      if (!req.file) {
         return res.status(400).json({ message: "Profile picture is required" });
       }
   
-      // Upload base64 or URL to Cloudinary
-      const uploadResponse = await cloudinary.uploader.upload(profilePic);
+      const imageUrl = req.file.path; // Cloudinary URL
   
       const updatedUser = await User.findByIdAndUpdate(
         userId,
-        { profilePic: uploadResponse.secure_url },
+        { profilePic: imageUrl },
         { new: true }
       );
   
@@ -104,6 +102,7 @@ export const updateProfile = async (req, res) => {
       return res.status(500).json({ message: "Internal Server Error" });
     }
   };
+  
 
 export const checkAuth=  async(req, res)=>{
     try {
