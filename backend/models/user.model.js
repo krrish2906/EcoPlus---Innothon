@@ -9,45 +9,52 @@ const userSchema = new mongoose.Schema(
 
         },
         fullName:
-             {
+        {
             type: String,
             required: true,
         },
-        password : {
+        password: {
             type: String,
             required: true,
-         
-            minlength : 6
+
+            minlength: 6
         },
 
-        profilePic : {
-            type : String , 
-            default :  ""
+        profilePic: {
+            type: String,
+            default: ""
         },
-        role :{
-            type : String , 
-            required : true,
-            enum : ["admin" , "user","organisations"],
-            default : "user"
+        role: {
+            type: String,
+            required: true,
+            enum: ["admin", "user", "organisations"],
+            default: "user"
         },
         location: {
-            lat: Number,
-            lng: Number,
+            type: {
+                type: String,
+                enum: ['Point'],
+                default: 'Point',
+            },
+            coordinates: {
+                type: [Number], // [longitude, latitude]
+                required: true,
+            },
             address: String
-          },
-        points : {
-            type : Number , 
-            default : 0
         },
-       badges : {
-        type : [String] , 
-        default : [],
-        enum : ['Eco Hero', 'Top Reporter']
-       }
-
+        points: {
+            type: Number,
+            default: 0
+        },
+        badges: {
+            type: [String],
+            default: [],
+            enum: ['Eco Hero', 'Top Reporter']
         }
-     , {timestamps : true}
-)
 
-const User = mongoose.model('User' , userSchema) ;
-export default User ;    
+    }
+    , { timestamps: true }
+)
+userSchema.index({ location: "2dsphere" });
+const User = mongoose.model('User', userSchema);
+export default User;    
