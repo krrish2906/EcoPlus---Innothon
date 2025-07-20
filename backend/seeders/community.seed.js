@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { connect } from "mongoose";
 import User from '../models/user.model.js'
 import { connectDb } from "../config/db.js";
 connectDb();
