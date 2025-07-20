@@ -1,9 +1,13 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useState} from 'react'
 import { FcGoogle } from 'react-icons/fc';
 import { PiEye, PiEyeClosed } from 'react-icons/pi';
-import { NavLink, useNavigate } from 'react-router';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux'; 
+
+
+import { authLogin } from '../slice/authSlice';
 
 export default function LogInPage() {
     const navigate = useNavigate();
@@ -13,17 +17,29 @@ export default function LogInPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.auth);
+
     const login = async (e) => {
         e.preventDefault();
         setIsLoading(true);
         try {
-            const response = await axios.post('http://localhost:3000/api/auth/login', {
-                email: emailAddress,
-                password: password,
-            });
-            if(response.statusText == "OK") {
-                navigate('/');
-            }
+            const response = await axios.post(
+                'http://localhost:3000/api/auth/login',
+                {
+                  email: emailAddress,
+                  password: password,
+                },
+                {
+                  withCredentials: true, 
+                }
+              );
+              
+            toast.success("Login Successfull")
+            
+            dispatch(authLogin(response.data));
+            navigate('/');
+            
         } catch (error) {
             toast.error(error.message)
         } finally {

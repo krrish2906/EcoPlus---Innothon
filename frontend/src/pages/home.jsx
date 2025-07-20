@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "../components/Card";
 import axios from "axios";
+import { useSelector } from "react-redux";
 import SideBar from "../components/SideBar";
 
 const organizations = [
@@ -25,6 +26,10 @@ const organizations = [
 export default function Home() {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
+  const user = useSelector((state) => state.auth);
+  if(!user.isLogin){
+    navigate("/auth/login");
+  }
 
   useEffect(() => {
     const fetchPosts = async () => {
