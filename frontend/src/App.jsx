@@ -7,6 +7,7 @@ import LogInPage from './pages/Login'
 import Home from './pages/Home'
 import ProfilePage from './pages/ProfilePage'
 import HomePage from './pages/HomePage'
+import Dashboard from './pages/Dashboard'
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
       <Route path="/postform" element={<PostForm />} />
       <Route path="/signup" element={<SignUpPage />} />
       <Route path="/Home" element={<Home />} />
+      <Route path="/dashboard" element={<Dashboard/>}/>
     </Routes>
   )
 }
