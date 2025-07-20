@@ -8,6 +8,7 @@ import PostsPage from './pages/home'
 import ProfilePage from './pages/ProfilePage'
 import NavBar from './components/NavBar'
 import CommunityPage from './pages/CommunityPage'
+import AllCommunity from './pages/AllCommunity'
 
 function App() {
 
@@ -17,7 +18,7 @@ function App() {
       <Routes>
       <Route index element={<PostsPage />} />
         <Route path="user/profile" element={<ProfilePage />} />
-        <Route path="community" element={<CommunityPage />} />
+        <Route path="communities" element={<AllCommunity />} />
         <Route path="auth/signup" element={<SignUpPage />} />
         <Route path="auth/login" element={<LogInPage />} />
         <Route path="postform" element={<PostForm />} />

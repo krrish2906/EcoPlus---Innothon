@@ -2,12 +2,28 @@ import React, { useState } from 'react';
 import axios from '../api/api.js';
 import { useNavigate } from 'react-router-dom';
 import { FiSearch } from 'react-icons/fi';
+import { toast } from 'react-toastify';
 
 function SideBar() {
   const [search, setSearch] = useState('');
   const [searchData, setSearchData] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
+
+  // Logout handler
+  const logout = async () => {
+    try {
+      const response = await axios.post('/auth/logout');
+      if(response.statusText == "OK") {
+        toast.success(response.data.message);
+      }
+      localStorage.clear();
+      sessionStorage.clear();
+      navigate('/login');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
 
   const fetchOrganizations = async (search) => {
     if (!search.trim()) {
@@ -122,6 +138,14 @@ function SideBar() {
               </div>
             ))}
           </div>
+        </div>
+        
+        <div className='absolute bottom-0 left-0 w-full px-4 py-2'>
+          <button
+            onClick={logout}
+            className='bg-red-500 text-white font-bold px-4 py-2 rounded-lg w-full cursor-pointer'>
+            Log Out
+          </button>
         </div>
       </aside>
     </div>
