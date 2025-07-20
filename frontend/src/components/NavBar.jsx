@@ -3,7 +3,6 @@ import React from 'react';
 import { IoSearchOutline } from 'react-icons/io5';
 import { GoPlus } from "react-icons/go";
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 
 function NavBar() {
     const navigate = useNavigate();
@@ -32,6 +31,9 @@ function NavBar() {
                         </li>
                         <li>
                             <NavLink to="/explore">Explore</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/communities">Communities</NavLink>
                         </li>
                         <li>
                             <NavLink to="/notifications">Notifications</NavLink>
