@@ -1,11 +1,8 @@
-import mongoose from "mongoose";
+import mongoose, { connect } from "mongoose";
 import User from '../models/user.model.js'
+import {connectDb} from '../config/db.js'
 
-mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
-
+connectDb();
 const seedCommunities = [
     {
         fullName: "World Wildlife Fund (WWF)",
