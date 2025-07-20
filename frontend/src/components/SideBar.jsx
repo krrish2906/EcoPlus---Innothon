@@ -20,7 +20,7 @@ function SideBar() {
       const response = await axios.post('/auth/logout');
       if(response.statusText == "OK") {
         toast.success(response.data.message);
-        dispatch(authLogout);
+        dispatch(authLogout());
         navigate('/auth/login');
       }
     } catch (error) {
