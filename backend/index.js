@@ -11,13 +11,13 @@ import reportRoutes from './routes/reportRoutes.js'; // ✅ Added line
 dotenv.config();
 import { connectDb } from './config/db.js';
 import cookieParser from 'cookie-parser';
+import seedDB from './seeders/community.seed.js'
 
 const PORT = process.env.PORT;
 const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
-
 app.use(cors({
     origin: "http://localhost:5173",
     credentials: true
@@ -29,11 +29,12 @@ app.use("/api/posts", postsRoutes);
 app.use("/api/comment", commentRoutes);
 app.use("/api/report", reportRoutes); 
 
-const setUpAndStartServer = () => {
-    app.listen(PORT, () => {
-        console.log("app is listening on the port", PORT);
+const setUpAndStartServer = ()=>{
+    app.listen(PORT , () => {
+        console.log("app is listening on the port " , PORT);
         connectDb();
+        seedDB();
     });
-};
+}
 
 setUpAndStartServer();
