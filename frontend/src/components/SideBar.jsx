@@ -3,8 +3,12 @@ import axios from '../api/api.js';
 import { useNavigate } from 'react-router-dom';
 import { FiSearch } from 'react-icons/fi';
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { authLogout } from '@/slice/authSlice.jsx';
 
 function SideBar() {
+  const dispatch = useDispatch();
+
   const [search, setSearch] = useState('');
   const [searchData, setSearchData] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -16,10 +20,9 @@ function SideBar() {
       const response = await axios.post('/auth/logout');
       if(response.statusText == "OK") {
         toast.success(response.data.message);
+        dispatch(authLogout);
+        navigate('/auth/login');
       }
-      localStorage.clear();
-      sessionStorage.clear();
-      navigate('/login');
     } catch (error) {
       console.error('Logout failed:', error);
     }
