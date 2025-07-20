@@ -8,19 +8,22 @@ import PostsPage from './pages/home'
 import ProfilePage from './pages/ProfilePage'
 import NavBar from './components/NavBar'
 import CommunityPage from './pages/CommunityPage'
+import {useSelector} from 'react-redux'
+import {Navigate} from 'react-router-dom'
 
 function App() {
 
+  const isLogin = useSelector((state) => state.auth.isLogin);
   return (
     <div>
-      <NavBar />
+      {isLogin && <NavBar />}
       <Routes>
-      <Route index element={<PostsPage />} />
-        <Route path="user/profile" element={<ProfilePage />} />
-        <Route path="community" element={<CommunityPage />} />
-        <Route path="auth/signup" element={<SignUpPage />} />
-        <Route path="auth/login" element={<LogInPage />} />
-        <Route path="postform" element={<PostForm />} />
+      <Route index element={isLogin ? <PostsPage /> : <Navigate to="/auth/login" />} />
+      <Route path="user/profile" element={isLogin ? <ProfilePage /> : <Navigate to="/auth/login" />} />
+      <Route path="community" element={isLogin ? <CommunityPage /> : <Navigate to="/auth/login" />} />
+      <Route path="auth/signup" element={!isLogin ? <SignUpPage /> : <Navigate to="/" />} />
+      <Route path="auth/login" element={!isLogin ? <LogInPage /> : <Navigate to="/" />} />
+      <Route path="postform" element={isLogin ? <PostForm /> : <Navigate to="/auth/login" />} />
       </Routes>
       </div>
     )
