@@ -4,8 +4,6 @@ import {protectRoute} from '../middlewares/auth.middleware.js'
 import {uploadProfilePic} from '../middlewares/upload.js'
 const router = express.Router();
 
-
-
 router.post('/signup' ,signup );
 router.post('/login' ,login );
 router.post('/logout' ,logout );
