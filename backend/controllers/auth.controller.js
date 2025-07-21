@@ -111,13 +111,28 @@ return res.status(200).json(updatedUser);
 
 export const getOrganisations = async (req, res) => {
     try {
-        const organisations = await User.find({role : "organisations"});
+        const organisations = await User.find({role : "organisations"}).select("-password");
         return res.status(200).json(organisations);
     } catch (error) {
         console.log("Error in the getOrganisations controller" , error.message);
         return res.status(500).json({ message: "Internal  Server Error" })
     }
 }
+
+export const getOrganisationById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const organisation = await User.findOne({ _id: id, role: "organisations" }).select("-password");
+        if (!organisation) {
+            return res.status(404).json({ message: "Organisation not found" });
+        }
+        return res.status(200).json(organisation);
+    } catch (error) {
+        console.log("Error in the getOrganisationById controller", error.message);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
 export const checkAuth = async (req, res) => {
   try {
     return res.status(200).json(req.user);
