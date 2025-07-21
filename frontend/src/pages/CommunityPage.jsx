@@ -40,7 +40,7 @@ function CommunityPage() {
                         <p className='text-[#4A709C]'>Founded in 2005 · 150K followers</p>
                     </div>
                     <div className='w-1/3'>
-                        <button className='w-full font-semibold bg-[#E8EDF5] rounded-md py-2'>
+                        <button className='w-full font-semibold bg-[#E8EDF5] rounded-md py-2 cursor-pointer'>
                             Follow
                         </button>
                     </div>
