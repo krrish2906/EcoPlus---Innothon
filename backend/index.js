@@ -32,7 +32,7 @@ const setUpAndStartServer = ()=>{
     app.listen(PORT , () => {
         console.log("app is listening on the port " , PORT);
         connectDb();
-        seedDB();
+        // seedDB();
     });
 }
 

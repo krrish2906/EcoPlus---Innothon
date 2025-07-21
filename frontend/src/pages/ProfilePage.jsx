@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { FiEdit2 } from 'react-icons/fi';
 import { data } from '../lib/data';
 import Card from '../components/Card';
+import { useSelector } from 'react-redux';
 
 function ProfilePage() {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ function ProfilePage() {
   const [userName, setUserName] = useState('');
   const [joinedDate, setJoinedDate] = useState('');
   const [activeTab, setActiveTab] = useState('events');
+  const user = useSelector((state) => state.auth.userData);
 
 //   useEffect(() => {
 //     const fetchUser = async () => {
@@ -93,9 +95,9 @@ function ProfilePage() {
 
           {/* User Info */}
           <div className='text-center'>
-            <h2 className='text-xl font-bold'>{userName}</h2>
+            <h2 className='text-xl font-bold'>{user.fullName}</h2>
             <p className='text-[#4A709C]'>Activist | Environmentalist | Volunteer</p>
-            <p className='text-[#4A709C]'>Joined in {joinedDate}</p>
+            <p className='text-[#4A709C]'>Joined in {user.createdAt}</p>
           </div>
         </div>
 
