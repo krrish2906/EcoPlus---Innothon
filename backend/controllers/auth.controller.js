@@ -114,3 +114,13 @@ export const checkAuth=  async(req, res)=>{
     }
 
 }
+
+export const getOrganisations = async (req, res) => {
+    try {
+        const organisations = await User.find({role : "organisations"});
+        return res.status(200).json(organisations);
+    } catch (error) {
+        console.log("Error in the getOrganisations controller" , error.message);
+        return res.status(500).json({ message: "Internal  Server Error" })
+    }
+}

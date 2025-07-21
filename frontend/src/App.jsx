@@ -10,6 +10,7 @@ import NavBar from './components/NavBar'
 import CommunityPage from './pages/CommunityPage'
 import {useSelector} from 'react-redux'
 import {Navigate} from 'react-router-dom'
+import AllCommunity from './pages/AllCommunity'
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
       <Route path="auth/signup" element={!isLogin ? <SignUpPage /> : <Navigate to="/" />} />
       <Route path="auth/login" element={!isLogin ? <LogInPage /> : <Navigate to="/" />} />
       <Route path="postform" element={isLogin ? <PostForm /> : <Navigate to="/auth/login" />} />
+      <Route path="communities" element={isLogin ? <AllCommunity /> : <Navigate to="/auth/login" />} />
       </Routes>
       </div>
     )
