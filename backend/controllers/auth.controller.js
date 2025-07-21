@@ -97,18 +97,27 @@ export const updateProfile = async (req, res) => {
     const imageUrl = req.file.path; // Cloudinary URL
 
     const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { profilePic: imageUrl },
-      { new: true }
-    );
+        userId,
+    { profilePic: imageUrl },
+    { new: true }
+);
 
-    return res.status(200).json(updatedUser);
-  } catch (error) {
+return res.status(200).json(updatedUser);
+} catch (error) {
     console.error("Error in updateProfile:", error.message);
     return res.status(500).json({ message: "Internal Server Error" });
-  }
+}
 };
 
+export const getOrganisations = async (req, res) => {
+    try {
+        const organisations = await User.find({role : "organisations"});
+        return res.status(200).json(organisations);
+    } catch (error) {
+        console.log("Error in the getOrganisations controller" , error.message);
+        return res.status(500).json({ message: "Internal  Server Error" })
+    }
+}
 export const checkAuth = async (req, res) => {
   try {
     return res.status(200).json(req.user);

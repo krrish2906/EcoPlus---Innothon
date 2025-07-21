@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import { useNavigate } from "react-router-dom";
 import Card from "../components/Card";
-import axios from "axios";
+import axios from "../api/api.js";
 import SideBar from "../components/SideBar";
 import CommunityCard from "@/components/CommunityCard";
 
