@@ -1,20 +1,41 @@
-import React, { useState } from 'react'
-import { NavLink } from 'react-router'
+import React, { useEffect, useState } from 'react'
+import { NavLink, useParams } from 'react-router'
 import { reports } from '../lib/data';
 import Report from '../components/Report';
+import axios from '../api/api'
 
 function CommunityPage() {
+    const { id } = useParams();
     const [activeTab, setActiveTab] = useState('events');
+    const [organisation, setOrganisation] = useState({});
+
+    useEffect(() => {
+        async function fetchOrganisation(id) {
+            if(!id) return;
+            try {
+                const response = await axios.get(`/auth/organisations/${id}`);
+                if(response.status === 200) {
+                    setOrganisation(response.data)
+                }   
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        fetchOrganisation(id);
+    }, [id]);
+
+    useEffect(() => {}, [organisation]);
 
     return (
         <div className='w-full flex justify-center'>
             <div className='w-4/5'>
                 <div className='w-full flex flex-col items-start gap-y-5 mt-12'>
                     <img
-                        src='/community.png'
+                        src={organisation.profilePic || '/community.png'}
+                        className='size-36 rounded-full object-contain border border-gray-200'
                     />
                     <div className='w-full flex flex-col items-start'>
-                        <h2 className='text-2xl font-bold'>Helping Hands Foundation</h2>
+                        <h2 className='text-2xl font-bold'>{ organisation.fullName }</h2>
                         <p className='text-[#4A709C]'>Non-profit Organization</p>
                         <p className='text-[#4A709C]'>Founded in 2005 · 150K followers</p>
                     </div>
@@ -80,11 +101,15 @@ function CommunityPage() {
                             <div className='flex gap-8 py-4'>
                                 <div>
                                     <span className='text-sm text-[#4A709C]'>Website</span>
-                                    <p className='text-sm'>http://localhost:5173</p>
+                                    <p className='text-sm'>
+                                        <NavLink to={organisation.website}>
+                                            { organisation.website }
+                                        </NavLink>
+                                    </p>
                                 </div>
                                 <div>
                                     <span className='text-sm text-[#4A709C]'>Email</span>
-                                    <p className='text-sm'>ecoplus.innothon@gmail.com</p>
+                                    <p className='text-sm'>{ organisation.email }</p>
                                 </div>
                             </div>
                         </div>

@@ -4,9 +4,11 @@ import Card from "../components/Card";
 import axios from "../api/api.js";
 import SideBar from "../components/SideBar";
 import CommunityCard from "@/components/CommunityCard";
+import { useNavigate } from "react-router";
 
 
 export default function AllCommunity() {
+  const navigate = useNavigate();
   const [communities, setCommunities] = useState([]);
 
     useEffect(() => {
@@ -14,7 +16,6 @@ export default function AllCommunity() {
           try {
               const response = await axios.get("/auth/organisations");
               setCommunities(response.data);
-              console.log(response.data)
           } catch (error) {
               console.error(error);
           }
@@ -38,7 +39,9 @@ export default function AllCommunity() {
             <p className="text-gray-500 text-center">No communities found.</p>
           ) : (
             communities.map((community, index) => (
-                <CommunityCard key={index} community={community} />
+                <div key={index} onClick={() => navigate(`/community/${community._id}`)}>
+                  <CommunityCard community={community} />
+                </div>
             ))
           )}
         </div>

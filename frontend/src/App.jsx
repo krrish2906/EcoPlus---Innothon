@@ -24,7 +24,8 @@ function App() {
       <Routes>
       <Route index element={isLogin ? <PostsPage /> : <Navigate to="/auth/login" />} />
       <Route path="user/profile" element={isLogin ? <ProfilePage /> : <Navigate to="/auth/login" />} />
-      <Route path="community" element={isLogin ? <CommunityPage /> : <Navigate to="/auth/login" />} />
+      <Route path="communities" element={isLogin ? <AllCommunity /> : <Navigate to="/auth/login" />} />
+      <Route path="community/:id" element={isLogin ? <CommunityPage /> : <Navigate to="/auth/login" />} />
       <Route path="auth/signup" element={!isLogin ? <SignUpPage /> : <Navigate to="/" />} />
       <Route path="auth/login" element={!isLogin ? <LogInPage /> : <Navigate to="/" />} />
       <Route path="postform" element={isLogin ? <PostForm /> : <Navigate to="/auth/login" />} />
