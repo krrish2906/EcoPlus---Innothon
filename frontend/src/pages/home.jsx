@@ -46,6 +46,7 @@ export default function Home() {
   return (
     <div className="flex h-screen overflow-hidden font-sans bg-gray-50">
       {/* Sidebar */}
+      
       <SideBar/>
 
       {/* Main Feed */}

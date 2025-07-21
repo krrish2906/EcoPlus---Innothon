@@ -1,11 +1,20 @@
 import React from "react";
-
+import { useNavigate } from "react-router-dom";
 function Card({ post }) {
+const navigate = useNavigate(); 
   const { title, description, imageUrl, location } = post.report;
   const { category, status } = post;
 
+
+const handelClick = (id) => {
+  navigate(`/post/${id}`);
+  console.log(id);
+}
+
   return (
-    <div className="flex flex-col md:flex-row bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 max-h-60 min-h-60">
+    <div className="flex flex-col md:flex-row bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 max-h-60 min-h-60"
+    onClick={() => handelClick(post._id)}
+    >
       
       {/* Image Section */}
       <div className="md:w-1/3 h-60">
