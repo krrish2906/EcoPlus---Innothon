@@ -38,6 +38,9 @@ function NavBar() {
                         <li>
                             <NavLink to="/notifications">Notifications</NavLink>
                         </li>
+                        <li>
+                            <NavLink to="/events">Events</NavLink>
+                        </li>
                         
                     </ul>
                 </div>

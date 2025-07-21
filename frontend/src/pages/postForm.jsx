@@ -13,7 +13,7 @@
         useEffect(() => {
             // console.log(location);
             if (location && location.formatted) {
-                const city = location?.city || location?.state || location?.country;
+                const city = location.village || location.formatted || location?.city || location?.state || location?.country;
             setCity(city)
             setPost((prev) => ({ ...prev, location: location.formatted }));
             }

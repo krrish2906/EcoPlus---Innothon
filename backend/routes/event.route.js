@@ -2,10 +2,11 @@ import { createEvent , getAllEvents , getEventById , updateEvent , deleteEvent }
 import express from "express";
 import {protectRoute} from '../middlewares/auth.middleware.js'
 const router = express.Router();
+import {uploadPostImage} from "../middlewares/upload.js";
 
-router.post('/create' , protectRoute , createEvent)
-router.get('/all' , protectRoute , getAllEvents)
-router.get('/:id' , protectRoute , getEventById)
+router.post('/create' , protectRoute , uploadPostImage.single("image") , createEvent)
+router.get('/all' , getAllEvents)
+router.get('/:id' , getEventById)
 router.put('/update/:id' , protectRoute , updateEvent)
 router.delete('/delete/:id' , protectRoute , deleteEvent)
 

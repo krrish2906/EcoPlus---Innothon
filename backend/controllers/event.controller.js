@@ -1,31 +1,55 @@
 import Event from '../models/event.model.js';
 
 
-export const createEvent = async(req,res)=>{
+export const createEvent = async (req, res) => {
     try {
-        const event = await Event.create(req.body);
-        return res.status(200).json(
-            {
-                data : event,
-                message : "Event created successfully",
-                success : true,
-                err:{}
-            }
-        )
-        
-    } catch (error) {
+        const { title, description, date, time } = req.body;
 
-        return res.status(500).json(
-            {
-                data : {},
-                message : "Cannot create event",
-                success : false,
-                err:{message : error.message}
+        // Parse location safely
+        let location = null;
+        if (req.body.location) {
+            try {
+                location = typeof req.body.location === "string"
+                    ? JSON.parse(req.body.location)
+                    : req.body.location;
+            } catch (err) {
+                console.error("Invalid location data:", req.body.location);
+                return res.status(400).json({ 
+                    message: "Invalid location format",
+                    success: false 
+                });
             }
-        )
-        
+        }
+
+        // Ensure host
+        const host = req.user?._id || "6651a6cbe95b7a6ff8911a33";
+
+        const eventData = { title, description, date, time, host, location };
+
+        // Handle image from Cloudinary
+        if (req.file && req.file.path) {
+            eventData.imageUrl = req.file.path;
+        }
+
+        const event = await Event.create(eventData);
+
+        return res.status(201).json({
+            data: event,
+            message: "Event created successfully",
+            success: true,
+            err: {},
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            data: {},
+            message: "Cannot create event",
+            success: false,
+            err: { message: error.message },
+        });
     }
-}
+};
+
 
 export const getAllEvents = async(req,res)=>{
     try {
