@@ -11,13 +11,13 @@ export default function AllCommunity() {
 
     useEffect(() => {
         const fetchCommunities = async () => {
-        try {
-            const response = await axios.get("/auth/organisations");
-            setCommunities(response.data);
-            console.log(response.data)
-        } catch (error) {
-            console.error(error);
-        }
+          try {
+              const response = await axios.get("/auth/organisations");
+              setCommunities(response.data);
+              console.log(response.data)
+          } catch (error) {
+              console.error(error);
+          }
         };
         fetchCommunities();
     }, []);
