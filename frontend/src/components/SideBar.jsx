@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { authLogout } from '@/slice/authSlice.jsx';
 
+
 function SideBar() {
   const dispatch = useDispatch();
 
@@ -39,7 +40,7 @@ function SideBar() {
       const res = await axios.get('/posts/search', {
         params: { search },
       });
-      setSearchData(res.data.slice(0, 3)); // Show top 3 only
+      setSearchData(res.data.slice(0, 3)); 
       setShowDropdown(true);
     } catch (error) {
       console.error('Search error:', error);
@@ -53,6 +54,7 @@ function SideBar() {
   };
 
   const handleResultClick = (id) => {
+    console.log(typeof id);
     navigate(`/post/${id}`);
     setSearch('');
     setSearchData([]);

@@ -11,6 +11,7 @@ import CommunityPage from './pages/CommunityPage'
 import {useSelector} from 'react-redux'
 import {Navigate} from 'react-router-dom'
 import AllCommunity from './pages/AllCommunity'
+import Post from './pages/post'
 
 function App() {
 
@@ -26,9 +27,10 @@ function App() {
       <Route path="auth/login" element={!isLogin ? <LogInPage /> : <Navigate to="/" />} />
       <Route path="postform" element={isLogin ? <PostForm /> : <Navigate to="/auth/login" />} />
       <Route path="communities" element={isLogin ? <AllCommunity /> : <Navigate to="/auth/login" />} />
+      <Route path="post/:id" element={isLogin ? <Post /> : <Navigate to="/auth/login" />} />
       </Routes>
       </div>
     )
 }
 
-export default App  
+export default App
