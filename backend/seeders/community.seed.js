@@ -1,7 +1,6 @@
 import mongoose, { connect } from "mongoose";
 import User from '../models/user.model.js'
-import {connectDb} from '../config/db.js'
-
+import { connectDb } from "../config/db.js";
 connectDb();
 const seedCommunities = [
     {
