@@ -1,7 +1,7 @@
 // src/hooks/useUserLocation.js
 import { useEffect, useState } from 'react';
 
-const API_KEY = '1c6571b0b4e240689a1fdb06cd084374'; // 🔑 Replace this
+const API_KEY = '1c6571b0b4e240689a1fdb06cd084374'; 
 
 const getCoords = () => {
   return new Promise((resolve, reject) => {
@@ -27,6 +27,7 @@ const getAddressFromCoords = async (latitude, longitude) => {
   const data = await res.json();
   if (data?.results?.length > 0) {
     const location = data.results[0].components;
+    console.log(location)
     return {
       city: location.city || location.town || location.village,
       state: location.state,

@@ -11,8 +11,13 @@ import CommunityPage from './pages/CommunityPage'
 import {useSelector} from 'react-redux'
 import {Navigate} from 'react-router-dom'
 import AllCommunity from './pages/AllCommunity'
+<<<<<<< HEAD
 import Events from './pages/Events'
 import EventForm from './pages/EventForm'
+=======
+import Post from './pages/post'
+
+>>>>>>> 146497d83ab6b023bf96b088c86b4b66bb3378e8
 function App() {
 
   const isLogin = useSelector((state) => state.auth.isLogin);
@@ -27,11 +32,15 @@ function App() {
       <Route path="auth/login" element={!isLogin ? <LogInPage /> : <Navigate to="/" />} />
       <Route path="postform" element={isLogin ? <PostForm /> : <Navigate to="/auth/login" />} />
       <Route path="communities" element={isLogin ? <AllCommunity /> : <Navigate to="/auth/login" />} />
+<<<<<<< HEAD
       <Route path="events" element={isLogin ? <Events /> : <Navigate to="/auth/login" />} />
       <Route path="eventform" element={isLogin ? <EventForm /> : <Navigate to="/auth/login" />} />
+=======
+      <Route path="post/:id" element={isLogin ? <Post /> : <Navigate to="/auth/login" />} />
+>>>>>>> 146497d83ab6b023bf96b088c86b4b66bb3378e8
       </Routes>
       </div>
     )
 }
 
-export default App  
+export default App
