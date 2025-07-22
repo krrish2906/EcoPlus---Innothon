@@ -1,5 +1,5 @@
 import express from "express";
-import { createComment, deleteComment, getCommentsByTarget } from "../controllers/comment.contoller.js";
+import { createComment, deleteComment, getCommentsByTarget } from "../controllers/comment.controller.js"; // Fixed typo: contoller -> controller
 import { protectRoute } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();

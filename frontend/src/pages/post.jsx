@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
 import fetchPost from "@/api/fetchPost";
+import { fetchComments, createComment } from "@/api/commentApi";
 import { useParams } from "react-router-dom";
 import SideBar from "../components/SideBar";
 
 const Post = () => {
   const { id } = useParams();
   const [post, setPost] = useState(null);
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoadingComments, setIsLoadingComments] = useState(true);
 
-  const fetch = async (id) => {
+  // Fetch post data
+  const fetchPostData = async (id) => {
     try {
       const response = await fetchPost(id);
       setPost(response.data);
@@ -16,16 +22,69 @@ const Post = () => {
     }
   };
 
+  // Fetch comments for the post
+  const fetchPostComments = async (postId) => {
+    try {
+      setIsLoadingComments(true);
+      const commentsData = await fetchComments(postId, 'Post');
+      setComments(commentsData);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+    } finally {
+      setIsLoadingComments(false);
+    }
+  };
+
+  // Handle comment submission
+  const handleSubmitComment = async (e) => {
+    e.preventDefault();
+    
+    if (!newComment.trim()) {
+      alert("Please enter a comment");
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      const createdComment = await createComment(newComment.trim(), id, 'Post');
+      
+      // The backend now returns the comment with populated user data
+      setComments(prevComments => [createdComment, ...prevComments]);
+      setNewComment("");
+    } catch (error) {
+      console.error("Error submitting comment:", error);
+      alert("Failed to post comment. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Format date for display
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
   useEffect(() => {
-    if (id) fetch(id);
+    if (id) {
+      fetchPostData(id);
+      fetchPostComments(id);
+    }
   }, [id]);
 
-  if (!post)
+  if (!post) {
     return (
       <div className="h-screen flex items-center justify-center text-lg text-gray-600">
         Loading...
       </div>
     );
+  }
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -61,30 +120,58 @@ const Post = () => {
 
         {/* Comment Section (Right Half) */}
         <div className="w-1/2 p-6 overflow-y-auto">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">Comments</h2>
-
-          {/* Dummy comments - replace with mapped API data later */}
-          <div className="space-y-4">
-            {[1, 2, 3].map((num) => (
-              <div
-                key={num}
-                className="bg-white rounded-lg shadow p-4 text-sm text-gray-700"
-              >
-                <p className="font-medium mb-1">User {num}</p>
-                <p>This is a comment example from user {num}.</p>
-              </div>
-            ))}
-          </div>
+          <h2 className="text-xl font-bold text-gray-800 mb-4">
+            Comments ({comments.length})
+          </h2>
 
           {/* Comment form */}
-          <div className="mt-6">
+          <form onSubmit={handleSubmitComment} className="mb-6">
             <textarea
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
               className="w-full h-24 p-3 rounded-md border border-gray-300 resize-none focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="Write a comment..."
+              disabled={isSubmitting}
             ></textarea>
-            <button className="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-medium px-4 py-2 rounded">
-              Post Comment
+            <button 
+              type="submit"
+              disabled={isSubmitting || !newComment.trim()}
+              className="mt-2 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium px-4 py-2 rounded transition-colors"
+            >
+              {isSubmitting ? "Posting..." : "Post Comment"}
             </button>
+          </form>
+
+          {/* Comments List */}
+          <div className="space-y-4">
+            {isLoadingComments ? (
+              <div className="text-center text-gray-500 py-4">
+                Loading comments...
+              </div>
+            ) : comments.length === 0 ? (
+              <div className="text-center text-gray-500 py-4">
+                No comments yet. Be the first to comment!
+              </div>
+            ) : (
+              comments.map((comment) => (
+                <div
+                  key={comment._id}
+                  className="bg-white rounded-lg shadow p-4 text-sm text-gray-700"
+                >
+                  <div className="flex justify-between items-start mb-2">
+                    <p className="font-medium text-gray-800">
+                      {comment.createdBy?.fullName || "Anonymous User"}
+                    </p>
+                    <span className="text-xs text-gray-500">
+                      {formatDate(comment.createdAt)}
+                    </span>
+                  </div>
+                  <p className="text-gray-700 leading-relaxed">
+                    {comment.content}
+                  </p>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>

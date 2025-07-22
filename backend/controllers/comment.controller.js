@@ -19,14 +19,18 @@ export const createComment = async (req, res) => {
             createdBy: userId
         });
 
+        // Populate the createdBy field with user data before sending response
+        const populatedComment = await Comment.findById(comment._id)
+            .populate("createdBy", "_id fullName");
+
         // Add comment ID to the target's comments field
         if (targetType === "Event") {
             await Event.findByIdAndUpdate(targetId, { $push: { comments: comment._id } });
         } else if (targetType === "Post") {
-            await Post.findByIdAndUpdate(targetId, { comments: comment._id });
+            await Post.findByIdAndUpdate(targetId, { $push: { comments: comment._id } });
         }
 
-        res.status(201).json(comment);
+        res.status(201).json(populatedComment);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -62,7 +66,7 @@ export const getCommentsByTarget = async (req, res) => {
             return res.status(400).json({ message: "Missing targetType or targetId." });
         }
         const comments = await Comment.find({ targetType, targetId })
-            .populate("createdBy", "_id name")
+            .populate("createdBy", "_id fullName")
             .sort({ createdAt: -1 });
         res.status(200).json(comments);
     } catch (error) {
