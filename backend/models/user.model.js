@@ -43,7 +43,11 @@ const userSchema = new mongoose.Schema(
         website: {
             type: String,
             default: ""
-        }
+        },
+        followers: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        }]
     },
     { timestamps: true }
 );

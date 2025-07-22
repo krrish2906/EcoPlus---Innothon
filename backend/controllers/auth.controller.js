@@ -133,6 +133,41 @@ export const getOrganisationById = async (req, res) => {
     }
 }
 
+export const followOrganisation = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { organisationId } = req.body;
+
+    const organisation = await User.findOne({ _id: organisationId, role: "organisations" });
+    if (!organisation) {
+      return res.status(404).json({ message: "Organisation not found" });
+    }
+
+    let action;
+    if (organisation.followers.includes(userId)) {
+      // Unfollow: remove userId from followers
+      organisation.followers = organisation.followers.filter(
+        followerId => followerId.toString() !== userId.toString()
+      );
+      action = "unfollowed";
+    } else {
+      // Follow: add userId to followers
+      organisation.followers.push(userId);
+      action = "followed";
+    }
+    await organisation.save();
+
+    return res.status(200).json({
+      action,
+      message: `Successfully ${action} the organisation`,
+      success: true
+    });
+  } catch (error) {
+    console.error("Error in followOrganisation:", error.message);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 export const checkAuth = async (req, res) => {
   try {
     return res.status(200).json(req.user);
@@ -141,3 +176,4 @@ export const checkAuth = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+

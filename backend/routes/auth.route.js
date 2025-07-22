@@ -1,5 +1,5 @@
 import express from "express";
-import {signup , login , logout , updateProfile , checkAuth, getOrganisations, getOrganisationById} from '../controllers/auth.controller.js'
+import {signup , login , logout , updateProfile , checkAuth, getOrganisations, getOrganisationById, followOrganisation} from '../controllers/auth.controller.js'
 import {protectRoute} from '../middlewares/auth.middleware.js'
 import {uploadProfilePic} from '../middlewares/upload.js'
 
@@ -12,6 +12,7 @@ router.put('/update',protectRoute  ,uploadProfilePic.single("profilePic") ,  upd
 router.get('/check' , protectRoute, checkAuth)
 router.get('/organisations'  , getOrganisations)
 router.get('/organisations/:id', getOrganisationById)
+router.post('/organisations/follow', protectRoute, followOrganisation)
 
 export default router;
 

@@ -7,7 +7,35 @@ import axios from '../api/api'
 function CommunityPage() {
     const { id } = useParams();
     const [activeTab, setActiveTab] = useState('events');
+    const [status, setStatus] = useState({
+        isFollowed: false,
+        followers: 0
+    });
     const [organisation, setOrganisation] = useState({});
+
+    const handleFollow = async () => {
+        try {
+            const response = await axios.post('/auth/organisations/follow', {
+                organisationId: organisation._id
+            });
+            if (response.data && response.data.success) {
+                const action = response.data.action === "followed"
+                // Refetch organisation data to update followers
+                const refreshed = await axios.get(`/auth/organisations/${id}`);
+                if (refreshed.status === 200) {
+                    setOrganisation(refreshed.data);
+                    console.log(refreshed.data)
+                    setStatus({
+                        isFollowed: action,
+                        followers: refreshed.data.followers.length
+                    });
+                    
+                }
+            }
+        } catch (error) {
+            console.error("Error following/unfollowing organisation:", error);
+        }
+    };
 
     useEffect(() => {
         async function fetchOrganisation(id) {
@@ -24,7 +52,7 @@ function CommunityPage() {
         fetchOrganisation(id);
     }, [id]);
 
-    useEffect(() => {}, [organisation]);
+    useEffect(() => {console.log(status)}, [organisation]);
 
     return (
         <div className='w-full flex justify-center'>
@@ -37,12 +65,22 @@ function CommunityPage() {
                     <div className='w-full flex flex-col items-start'>
                         <h2 className='text-2xl font-bold'>{ organisation.fullName }</h2>
                         <p className='text-[#4A709C]'>Non-profit Organization</p>
-                        <p className='text-[#4A709C]'>Founded in 2005 · 150K followers</p>
+                        <p className='text-[#4A709C]'>Founded in 2005 · { status.followers } followers</p>
                     </div>
                     <div className='w-1/3'>
-                        <button className='w-full font-semibold bg-[#E8EDF5] rounded-md py-2 cursor-pointer'>
-                            Follow
-                        </button>
+                    <button
+                        onClick={handleFollow}
+                        className={`w-full font-semibold rounded-md py-2 cursor-pointer transition-colors duration-300
+                            ${
+                                status.isFollowed
+                                ? "bg-gray-100 text-gray-700 border border-gray-400 hover:bg-gray-200"
+                                : "bg-[#0D78F2] text-white hover:bg-blue-700"
+                            }
+                        `}
+                    >
+                        {status.isFollowed ? "Following" : "Follow"}
+                    </button>
+
                     </div>
                 </div>
 
