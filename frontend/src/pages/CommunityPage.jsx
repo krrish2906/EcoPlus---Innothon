@@ -3,14 +3,15 @@ import { NavLink, useParams } from 'react-router'
 import { reports } from '../lib/data';
 import Report from '../components/Report';
 import axios from '../api/api'
+import { useSelector } from "react-redux";
 
 function CommunityPage() {
+    const userId = useSelector((state) => state.auth.userData._id);
     const { id } = useParams();
     const [activeTab, setActiveTab] = useState('events');
-    const [status, setStatus] = useState({
-        isFollowed: false,
-        followers: 0
-    });
+    const [isFollowed, setIsFollowed] = useState(false);
+    const [followersCount, setFollowersCount] = useState(0);
+
     const [organisation, setOrganisation] = useState({});
 
     const handleFollow = async () => {
@@ -20,17 +21,8 @@ function CommunityPage() {
             });
             if (response.data && response.data.success) {
                 const action = response.data.action === "followed"
-                // Refetch organisation data to update followers
-                const refreshed = await axios.get(`/auth/organisations/${id}`);
-                if (refreshed.status === 200) {
-                    setOrganisation(refreshed.data);
-                    console.log(refreshed.data)
-                    setStatus({
-                        isFollowed: action,
-                        followers: refreshed.data.followers.length
-                    });
-                    
-                }
+                setIsFollowed(action);
+                setFollowersCount(response.data.organisation.followers.length);
             }
         } catch (error) {
             console.error("Error following/unfollowing organisation:", error);
@@ -43,16 +35,18 @@ function CommunityPage() {
             try {
                 const response = await axios.get(`/auth/organisations/${id}`);
                 if(response.status === 200) {
-                    setOrganisation(response.data)
+                    setOrganisation(response.data);
+                    setFollowersCount(response.data.followers.length);
+                    setIsFollowed(response.data.followers.includes(userId));
                 }   
             } catch (error) {
                 console.log(error)
             }
         }
         fetchOrganisation(id);
-    }, [id]);
+    }, [id, userId]);
 
-    useEffect(() => {console.log(status)}, [organisation]);
+    useEffect(() => {}, [organisation]);
 
     return (
         <div className='w-full flex justify-center'>
@@ -65,20 +59,20 @@ function CommunityPage() {
                     <div className='w-full flex flex-col items-start'>
                         <h2 className='text-2xl font-bold'>{ organisation.fullName }</h2>
                         <p className='text-[#4A709C]'>Non-profit Organization</p>
-                        <p className='text-[#4A709C]'>Founded in 2005 · { status.followers } followers</p>
+                        <p className='text-[#4A709C]'>Founded in 2005 · { followersCount } followers</p>
                     </div>
                     <div className='w-1/3'>
                     <button
                         onClick={handleFollow}
                         className={`w-full font-semibold rounded-md py-2 cursor-pointer transition-colors duration-300
                             ${
-                                status.isFollowed
+                                isFollowed
                                 ? "bg-gray-100 text-gray-700 border border-gray-400 hover:bg-gray-200"
                                 : "bg-[#0D78F2] text-white hover:bg-blue-700"
                             }
                         `}
                     >
-                        {status.isFollowed ? "Following" : "Follow"}
+                        { isFollowed ? "Following" : "Follow" }
                     </button>
 
                     </div>
